@@ -38,4 +38,17 @@ for year in Years:
 	OutLoc = DataDrt + year + "CountyVotes.csv"
 	df.to_csv(OutLoc, index=False)
 
+
+
 # (1) Merge the 2012 & 2016 vote data files created in (0.4)
+# (1.0) read the two dataframes 
+df12 = pd.read_csv(DataDrt + '2012' + 'CountyVotes.csv')
+df16 = pd.read_csv(DataDrt + '2016' + 'CountyVotes.csv')
+# drop the 'county_name' column from 2016 data, to merge only on fips
+df16 = df16.drop('county_name', 1)
+
+# (1.1) do merge
+# http://pandas.pydata.org/pandas-docs/stable/merging.html
+del(df)
+df = pd.merge(df12, df16, on='fips', indicator=True)
+# can get a tabulation on a series using my_series.value_counts()
